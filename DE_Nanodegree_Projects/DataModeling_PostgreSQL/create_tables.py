@@ -59,12 +59,18 @@ def main():
     - Finally, closes the connection. 
     """
     
-    cur, conn = create_database()
-    
-    drop_tables(cur, conn)
-    create_tables(cur, conn)
+    try:
+        cur, conn = create_database()
 
-    conn.close()
+        drop_tables(cur, conn)
+        create_tables(cur, conn)
+
+        conn.close()
+        print('Tables were successfully created')
+    
+    except psycopg2.Error as e:
+        print(e)
+
 
 
 if __name__ == "__main__":

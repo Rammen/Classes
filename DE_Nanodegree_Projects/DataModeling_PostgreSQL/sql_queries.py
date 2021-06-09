@@ -27,14 +27,14 @@ user_table_create = ("""CREATE TABLE IF NOT EXISTS users (
                                 level       text) """)
 
 song_table_create = ("""CREATE TABLE IF NOT EXISTS songs (
-                                song_id     int   PRIMARY KEY,
+                                song_id     text   PRIMARY KEY,
                                 title       text,
-                                artist_id   int,
+                                artist_id   text,
                                 year        int,
                                 duration    float) """)
 
 artist_table_create = ("""CREATE TABLE IF NOT EXISTS artists (
-                                artist_id   int   PRIMARY KEY, 
+                                artist_id   text   PRIMARY KEY, 
                                 name        text, 
                                 location    text, 
                                 latitude    float, 
@@ -51,21 +51,22 @@ time_table_create = ("""CREATE TABLE IF NOT EXISTS time (
 
 # INSERT RECORDS
 
-songplay_table_insert = ("""
+songplay_table_insert = (""" 
 """)
 
-user_table_insert = ("""
-""")
+user_table_insert = ("""INSERT INTO users (user_id, first_name, last_name, gender, level) 
+                        VALUES (%s, %s, %s, %s, %s)
+                        ON CONFLICT (user_id) 
+                            DO UPDATE SET level = EXCLUDED.level""")
 
-song_table_insert = ("""
-""")
+song_table_insert = ("""INSERT INTO songs (song_id, title, artist_id, year, duration) 
+                        VALUES (%s, %s, %s, %s, %s) """)
 
-artist_table_insert = ("""
-""")
+artist_table_insert = ("""INSERT INTO artists (artist_id, name, location, latitude, longitude) 
+                          VALUES (%s, %s, %s, %s, %s) """)
 
-
-time_table_insert = ("""
-""")
+time_table_insert = ("""INSERT INTO time (start_time, hour, day, week, month, year, weekday) 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s) """)
 
 # FIND SONGS
 
