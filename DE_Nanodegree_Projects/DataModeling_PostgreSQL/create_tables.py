@@ -66,7 +66,7 @@ def main():
         create_tables(cur, conn)
 
         conn.close()
-        print('Tables were successfully created')
+        print('\n\n-----> Tables were successfully created')
     
     except psycopg2.Error as e:
         print(e)

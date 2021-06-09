@@ -13,7 +13,7 @@ songplay_table_create = ("""CREATE TABLE IF NOT EXISTS songplays (
                                 start_time  timestamp   NOT NULL,
                                 user_id     text         NOT NULL, 
                                 level       text,
-                                song_id     int,
+                                song_id     text,
                                 artist_id   text, 
                                 session_id  int,
                                 location    text,
@@ -64,10 +64,12 @@ song_table_insert = ("""INSERT INTO songs (song_id, title, artist_id, year, dura
                         VALUES (%s, %s, %s, %s, %s) """)
 
 artist_table_insert = ("""INSERT INTO artists (artist_id, name, location, latitude, longitude) 
-                          VALUES (%s, %s, %s, %s, %s) """)
+                          VALUES (%s, %s, %s, %s, %s) 
+                          ON CONFLICT (artist_id) DO NOTHING """)
 
 time_table_insert = ("""INSERT INTO time (start_time, hour, day, week, month, year, weekday) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s) """)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s) 
+                        ON CONFLICT (start_time) DO NOTHING """)
 
 # FIND SONGS
 song_select = ("""SELECT songs.song_id, artists.artist_id
