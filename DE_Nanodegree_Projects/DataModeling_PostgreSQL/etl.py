@@ -6,6 +6,16 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
+    
+    """ 
+    This function open a single JSON file (filepath) about song_data and load it in a DataFrame
+    The data is added to the dimension tables named 'songs' and 'artists' based on queries from sql_queries.py
+    
+    Arguments:
+    - cur = cursor to the database
+    - filepath = path to a JSON file on song_data
+    """
+    
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -19,6 +29,15 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+
+    """ 
+    This function open a single JSON file (filepath) about log_data and load it in a DataFrame
+    This data is added into two dimension tables named 'users' and 'time' as well as in the fact table 'songplays' based on sql_queries.py
+    
+    Arguments:
+    - cur = Cursor to the database
+    - filepath = path to the log_data
+    """
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -62,6 +81,17 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    
+    """
+    This function iterate trought a folder to create a list of string where each string is a path to a JSON file.
+    For each filepath in this list, the data is processed throught the specified function (func)
+    
+    Arguments:
+    - cur = Cursor to the database
+    - conn = Connection to the database
+    - filepath = path to the folder with the data that need to be processed
+    - func = python-function used to insert data into the appropriated table
+    """
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -81,6 +111,16 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    
+    """
+    This is the Main Function of the script and will run above functions
+    It first connect to the database (here it's a local database name 'postgres')
+    
+    It will iterate through the two data sources (song_data & log_data) to add the data into the appropriate table 
+    
+    NOTE: it requires to have tables already created (this can be done with the file 'create_tables.py') 
+    """
+    
     conn = psycopg2.connect("host=localhost dbname=postgres user=postgres password=pasha_enjoin_flint")
     cur = conn.cursor()
 
