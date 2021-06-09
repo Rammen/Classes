@@ -25,7 +25,7 @@ In this project, we created 1 fact table and 4 dimension tables:
 - *artists* : artists in the music database
 - *time* : timestamps of records in songplays broken down into specific units
 
-![Schema of the relational database - Data Modeling](https://github.com/Rammen/Classes/tree/main/DE_Nanodegree_Projects/DataModeling_PostgreSQL/Data_Modeling.png)
+![Schema of the relational database - Data Modeling](Data_Modeling.PNG)
 
 ## Projects Files
 
