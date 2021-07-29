@@ -47,7 +47,7 @@ staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events (
                                 sessionId           int,
                                 song                text,
                                 status              int, 
-                                ts                  timestamp,
+                                ts                  bigint,
                                 userAgent           text,
                                 userId              int        )""")
 
@@ -110,25 +110,23 @@ staging_events_copy = ("""  COPY staging_events
                             FROM {}
                             CREDENTIALS 'aws_iam_role={}'
                             REGION 'us-west-2'
-                            FORMAT as json {}
-                            TIMEFORMAT as 'epochmillisecs';   """).format(LOG_DATA,IAM_ROLE,LOG_JSONPATH)
+                            FORMAT as json {};   """).format(LOG_DATA,IAM_ROLE,LOG_JSONPATH)
 
 staging_songs_copy = ("""   COPY staging_songs 
                             FROM {}
-                            CREDENTIALS 'aws_iam_role={}'
-                            REGION 'us-west-2'
+                            CREDENTIALS 'aws_iam_role={}'                            REGION 'us-west-2'
                             JSON 'auto';         """).format(SONG_DATA, IAM_ROLE)
 
 # FINAL TABLES
 
 songplay_table_insert = ("""INSERT INTO songplays (start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
                             SELECT DISTINCT 
-                                DATE_ADD('ms', logs.ts, '1970-01-01') AS start_time,
-                                logs.user_id,
+                                TIMESTAMP 'epoch' + ts/1000 *INTERVAL '1 second' as start_time,
+                                logs.userId,
                                 logs.level,
                                 songs.song_id,
                                 songs.artist_id,
-                                logs.session_id,
+                                logs.sessionId,
                                 logs.location,
                                 logs.useragent
                                 
@@ -170,7 +168,7 @@ artist_table_insert = ("""INSERT INTO artists (artist_id, name, location, latitu
 
 time_table_insert = ("""INSERT INTO time (start_time, hour, day, week, month, year, weekday)
                         SELECT DISTINCT 
-                                timestamp 'epoch' + ts/1000 * interval '1 second' as start_time,
+                                TIMESTAMP 'epoch' + ts/1000 *INTERVAL '1 second' as start_time,
                                 DATE_PART(h,   start_time),
                                 DATE_PART(d,   start_time), 
                                 DATE_PART(w,   start_time),
@@ -188,5 +186,4 @@ drop_table_queries = [staging_events_table_drop, staging_songs_table_drop, songp
 
 copy_table_queries = [staging_events_copy, staging_songs_copy]
 
-# insert_table_queries = [songplay_table_insert, user_table_insert, song_table_insert, artist_table_insert, time_table_insert]
-insert_table_queries = [user_table_insert, song_table_insert, artist_table_insert, time_table_insert]
+insert_table_queries = [songplay_table_insert, user_table_insert, song_table_insert, artist_table_insert, time_table_insert]

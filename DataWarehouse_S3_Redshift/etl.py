@@ -30,7 +30,7 @@ def insert_tables(cur, conn):
         cur.execute(query)
         conn.commit()
         
-        print('New tables: 0/{} created'.format(q, len(insert_table_queries)))
+        print('New tables: {}/{} created'.format(q, len(insert_table_queries)))
         q=q+1
     print('Transforming data and inserting into tables completed')
 
