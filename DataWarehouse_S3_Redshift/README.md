@@ -23,7 +23,9 @@ Project completed as part of the Data Engineering Nanodegree Program
 1. Create role and redshift cluster in AWS
 
 2. Create tables in redshift
+    
     a. Create staging tables to get the raw data into Redshift
+    
     b. Create the final tables based on the new star schema
 
 3. Copy data from S3 into staging table in Redshift
