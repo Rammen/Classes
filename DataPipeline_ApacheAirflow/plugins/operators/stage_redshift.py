@@ -3,10 +3,14 @@ from airflow.hooks.postgres_hook import PostgresHook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
+"""
+Load Dimension Operator:
+Take data from S3 and copy the data into new table in Redshift 
+Requires the empty table in redshift to be created prior
+"""
+
 class StageToRedshiftOperator(BaseOperator):
-    """
-    Load Dimension Operator: Take data from S3 and copy them into Redshift 
-    """
+
     
     # UI colour in Apache Airflow
     ui_color = '#358140'

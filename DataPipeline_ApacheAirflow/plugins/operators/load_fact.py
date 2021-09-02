@@ -2,11 +2,20 @@ from airflow.hooks.postgres_hook import PostgresHook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
+
+"""
+This operator:
+1. Takes data from the staging tables in redshift
+2. Apply an SQL statement to create the fact table
+3. Save the new dimension table in redshift
+
+Requires the empty table in redshift to be created prior
+
+"""
+
 class LoadFactOperator(BaseOperator):
-    """
-    Take data from redshift and apply a SQL statement to create a new fact table (in redshift)
-    """
     
+    # This is the base for the SQL statement
     insert_fact_table_sql = """
         INSERT INTO {}
         {} """

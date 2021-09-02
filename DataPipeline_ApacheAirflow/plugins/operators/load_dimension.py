@@ -2,11 +2,19 @@ from airflow.hooks.postgres_hook import PostgresHook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
+"""
+This operator:
+1. Takes data from the staging tables in redshift
+2. Apply an SQL statement to create a dimension table
+3. Save the new dimension table in redshift
+
+Requires the empty table in redshift to be created prior
+
+"""
+
 class LoadDimensionOperator(BaseOperator):
-    """
-    Take data from redshift and apply a SQL statement to create a dimension table (in redshift)
-    """
-    
+
+    # Base for the SQL statement use
     insert_dimension_table_sql = """
         INSERT INTO {}
         {} """

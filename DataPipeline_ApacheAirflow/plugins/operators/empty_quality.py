@@ -3,6 +3,12 @@ from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 from airflow.exceptions import AirflowSkipException
 
+"""
+This operator aims to ensure the quality of the data. 
+It takes a table and checks if it is empty.
+No table should be empty at this point. Thus if one table is empty there's an error somewhere
+"""
+
 class EmptyQualityOperator(BaseOperator):
 
     ui_color = '#89DA59'
@@ -23,17 +29,19 @@ class EmptyQualityOperator(BaseOperator):
         self.log.info("----> Setting Redshift credentials")
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         
-        # If there is no querries to ckeck the quality of the data: this task will be marked as skipped in airflow
+        # If there is no tables to ckeck the quality of the data: this task will be marked as skipped in airflow
         if len(self.tables) == 0:
             self.log.info('No tables were given to check the data quality. This step will be skipped')
             raise AirflowSkipException
             
         self.log.info('Processing the tables')
         
+        # Check all the tables one by one to see if it is empty
         for table in self.tables:
             self.log.info(f"Checking if table {table} is empty")
             number_rows = redshift.get_records(f"SELECT COUNT(*) FROM {table}")[0][0]
             
+            # If there is more than 0 row, there is data in the table
             if number_rows > 0:
                 self.log.info(f"Table {table} contains {number_rows} rows of data")
             

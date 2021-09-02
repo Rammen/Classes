@@ -4,13 +4,15 @@ from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators import (StageToRedshiftOperator, LoadFactOperator,
                                 LoadDimensionOperator, DataQualityOperator, EmptyQualityOperator)
-
 from helpers import SqlQueries
 
+
 """
-Create the Dag and its default settings
+This is the main file of this project.
+You can find every operator and steps used in the Sparkify pipeline
 """
 
+#Creation of the Dag and its default settings
 default_args = {
     'owner': 'udacity',
     'start_date': datetime(2019, 1, 12),
@@ -21,7 +23,7 @@ default_args = {
     'catchup': False
 }
 
-dag = DAG('udac_example_dag',
+dag = DAG('sparkigy_pipeline',
           default_args=default_args,
           description='Load and transform data in Redshift with Airflow',
           schedule_interval=None # Only when asked
@@ -120,6 +122,7 @@ run_quality_empty = EmptyQualityOperator(
     tables=['artists', 'time', 'users', 'songs', 'songplays']
 )
 
+# End of the dag
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag, trigger_rule='all_done')
 
 
