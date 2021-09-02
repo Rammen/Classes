@@ -87,7 +87,7 @@ The data engineering program touches the following topics: **1)** data modelling
 3. Transform the raw data into a star-schema from *Project 1* with Spark
 4. Add the new tables in S3
 
-## Project 5: [Data Lake](https://github.com/Rammen/DataEngineering_Course/tree/main/DataLake_Spark)
+## Project 5: [Data Pipeline with Apache Airflow](https://github.com/Rammen/DataEngineering_Course/tree/main/DataPipeline_ApacheAirflow)
 
 **Skills**: AmazonWebServices (S3), Apache Airflow
 
