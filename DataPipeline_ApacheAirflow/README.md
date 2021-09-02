@@ -14,7 +14,7 @@ Project completed as part of the Data Engineering Nanodegree Program
 
 **Objectives:** The objective is to develop a pipeline for Sparkify that will automaticly take the raw data from its sources, transform them into a new star schema (see graph below) and store the new data in the cloud (in this case: redshift). The goal is to create custom operators to perform tasks such as staging the data, filling the data warehouse, and running checks on the data as the final step.
 
-![Schema of the relational database - Data Modeling](pipeline_dags.PNG)
+![Schema of the pipeline - Data Pipeline](pipeline_dags.PNG)
 
 ## Data Pipeline Project
 
